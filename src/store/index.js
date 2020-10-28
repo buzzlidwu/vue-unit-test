@@ -19,27 +19,25 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    buttonStatus: false,
+    buttonDisabled: false,
     errorStatus: false,
-    page: 1,
+    pageNumber: 1,
     employeeList: []
   },
   mutations: {
-    [MutationsTypes.ADD_PAGE_NUMBER]: state => state.page++,
-    [MutationsTypes.REDUCE_PAGE_NUMBER]: state => state.page--,
+    [MutationsTypes.ADD_PAGE_NUMBER]: state => state.pageNumber++,
+    [MutationsTypes.REDUCE_PAGE_NUMBER]: state => state.pageNumber--,
     [MutationsTypes.SET_EMPLOYEE]: (state, employeeList) => (state.employeeList = employeeList),
-    [MutationsTypes.SET_BUTTON_STATUS]: (state, status) => (state.buttonStatus = status),
+    [MutationsTypes.SET_BUTTON_STATUS]: (state, status) => (state.buttonDisabled = status),
     [MutationsTypes.SET_ERROR_STATUS]: (state, status) => (state.errorStatus = status)
   },
   actions: {
     [ActionTypes.NEXT_PAGE]: async ({ dispatch, commit, state }) => {
       commit(MutationsTypes.ADD_PAGE_NUMBER)
-      // commit('nextPage')
       await dispatch(ActionTypes.GET_EMPLOYEE_LIST, state.page)
     },
     [ActionTypes.PREV_PAGE]: async ({ dispatch, commit, state }) => {
       if (state.page > 1) {
-        // commit('prevPage')
         commit(MutationsTypes.REDUCE_PAGE_NUMBER)
         await dispatch(ActionTypes.GET_EMPLOYEE_LIST, state.page)
       }
@@ -48,7 +46,6 @@ export default new Vuex.Store({
       commit(MutationsTypes.SET_BUTTON_STATUS, true)
       commit(MutationsTypes.SET_ERROR_STATUS, false)
       try {
-        // await dispatch('delay', 3000)
         const { data: resp } = await getEmployeeList(state.page)
         commit(MutationsTypes.SET_EMPLOYEE, resp.data)
       } catch (e) {
@@ -60,7 +57,7 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    page: state => state.page,
-    employee: state => state.employeeList
-  },
+    pageNumber: state => state.pageNumber,
+    employeeList: state => state.employeeList
+  }
 })

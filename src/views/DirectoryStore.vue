@@ -4,25 +4,25 @@
       <v-col cols="6" style="textAlign:center">
         <v-row>
           <v-col cols="4">
-            <v-btn large color="error" width="100px" @click.prevent="prevPage" :disabled="buttonStatus" data-testId="prevBtn">Prev Page</v-btn>
+            <v-btn large color="error" width="100px" @click.prevent="prevPage" :disabled="buttonDisabled" data-test="prevBtn">Prev Page</v-btn>
           </v-col>
           <v-col cols="4" style="textAlign:center">
-            <h1 data-testId="pageSize">{{ page }}</h1>
+            <h1 data-test="pageSize">{{ pageNumber }}</h1>
           </v-col>
           <v-col cols="4" style="textAlign:center">
-            <v-btn large color="primary" width="100px" @click.prevent="nextPage" :disabled="buttonStatus" data-testId="nextBtn">Next Page</v-btn>
+            <v-btn large color="primary" width="100px" @click.prevent="nextPage" :disabled="buttonDisabled" data-test="nextBtn">Next Page</v-btn>
           </v-col>
         </v-row>
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12" style="textAlign:center" v-if="employee.length === 0">
-        <span data-testId="emptyListMsg">USER LIST IS EMPTY</span>
+      <v-col cols="12" style="textAlign:center" v-if="employeeList.length === 0">
+        <span data-test="emptyListMsg">USER LIST IS EMPTY</span>
         <br />
-        <span test-dataId="errorMsg" v-if="errorStatus" style="color:red;fontSize:30px"> {{ errorMsg }} </span>
+        <span data-test="errorMsg" v-if="errorStatus" style="color:red;fontSize:30px"> {{ errorMsg }} </span>
       </v-col>
-      <v-col cols="4" v-else v-for="user of employee" :key="user.mail" data-testId="user-info">
-        <UserCard :user="user" />
+      <v-col cols="4" v-else v-for="employee of employeeList" :key="employee.mail" data-testId="user-info">
+        <UserCard :user="employee" />
       </v-col>
     </v-row>
   </div>
@@ -50,8 +50,8 @@ export default {
     })
   },
   computed: {
-    ...mapState(['errorStatus', 'buttonStatus']),
-    ...mapGetters(['page', 'employee'])
+    ...mapState(['errorStatus', 'buttonDisabled']),
+    ...mapGetters(['pageNumber', 'employeeList'])
   },
 
   async created() {
