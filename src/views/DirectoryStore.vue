@@ -31,7 +31,7 @@
 <script>
 import UserCard from '@/components/UserCard'
 import { mapActions, mapGetters, mapState } from 'vuex'
-
+import { ActionTypes } from '@/store'
 export default {
   name: 'DirectoryStore',
   components: {
@@ -43,7 +43,11 @@ export default {
   }),
 
   methods: {
-    ...mapActions(['getEmployee', 'nextPage', 'prevPage'])
+    ...mapActions({
+      nextPage: ActionTypes.NEXT_PAGE,
+      prevPage: ActionTypes.PREV_PAGE,
+      getEmployeeList: ActionTypes.GET_EMPLOYEE_LIST
+    })
   },
   computed: {
     ...mapState(['errorStatus', 'buttonStatus']),
@@ -51,7 +55,7 @@ export default {
   },
 
   async created() {
-    await this.getEmployee()
+    this.getEmployeeList()
   }
 }
 </script>
